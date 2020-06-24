@@ -5,10 +5,10 @@
         <div class="column">
           <ul>
             <li class="is-active">
-              <a>All</a>
+              <a @click="fetchAllItems">All</a>
             </li>
             <li>
-              <a>In progress</a>
+              <a @click="filterInProgress">In progress</a>
             </li>
             <li>
               <a>Completed</a>
@@ -39,7 +39,7 @@
           </div>
 
           <!-- list -->
-          <div v-for="item in items" :key=item.id class="card">
+          <div v-for="item in filterItems" :key=item.id class="card">
             <header class="card-header">
               <p class="card-header-title">{{item.title}}</p>
               <a href="#" class="card-header-icon" aria-label="more options">
@@ -75,6 +75,7 @@ export default {
   data: function() {
     return {
       items: [],
+      filterItems: [],
       newItem: {
         comment: 'new comment',
         deadline_at: '2020-06-30T07:07:23.613Z',
@@ -86,15 +87,27 @@ export default {
     this.fetchAllItems()
   },
   methods: {
+    filterInProgress(){
+      this.filterItems = this.items.filter(item => item.completed_at === null);
+    },
     fetchAllItems(){
       let self = this
       axios
         .get("/items.json")
         .then(function(response) {
           self.items = response.data;
-          console.log(response);
-          console.log('data')
+          self.items.map(item => {
+            return {
+              id: item.id,
+              comment: item.comment,
+              completed_at: Date.parse(item.completed_at),
+              star: item.star,
+              title: item.title,
+              created_at: Date.parse(item.created_at),
+            }
+          })
           console.log(self.items)
+          self.filterItems = self.items
         })
         .catch(function(error) {
           console.log(error);
@@ -124,16 +137,14 @@ export default {
     },
     deleteItem(id){
       let self = this
+      const url = `/items/${id}/`
       axios
-        .delete(`/items/${id}`)
+        .delete(url)
         .then(function(response) {
-          console.log('hhhhhhhhhhhhhhhhhhhhhh')
-          alert(response)
-          console.log(response)
           self.fetchAllItems()
         })
         .catch(function(error) {
-          console.log(error);
+          self.fetchAllItems()
         })
         .then(function() {
           // always executed
