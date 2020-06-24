@@ -60,7 +60,7 @@
             </div>
             <footer class="card-footer">
               <a href="#" class="card-footer-item">Edit</a>
-              <a href="#" class="card-footer-item">Delete</a>
+              <a @click="deleteItem(item.id)" class="card-footer-item">Delete</a>
             </footer>
           </div>
         </div>
@@ -121,6 +121,23 @@ export default {
     },
     clearNewItem(){
       this.newItem = {title: '', comment: '', deadline_at: ''}
+    },
+    deleteItem(id){
+      let self = this
+      axios
+        .delete(`/items/${id}`)
+        .then(function(response) {
+          console.log('hhhhhhhhhhhhhhhhhhhhhh')
+          alert(response)
+          console.log(response)
+          self.fetchAllItems()
+        })
+        .catch(function(error) {
+          console.log(error);
+        })
+        .then(function() {
+          // always executed
+        });
     }
   }
 };
