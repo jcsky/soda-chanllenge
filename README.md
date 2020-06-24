@@ -24,7 +24,7 @@ yarn: 1.19.0
 6. open `localhost:3000`
 You can see the index page, list 4 items
 
-### deploy project
+### deploy project to remote server
 
 1. write dockerfile to dockerize this project, and push to docker registry
 2. ssh into remote server
