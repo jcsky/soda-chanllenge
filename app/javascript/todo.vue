@@ -52,7 +52,7 @@
               <div class="content">
                 comment: {{item.comment}}
               </div>
-              <p>star: {{item.star}}</p>
+              <a @click="toggleStar(item.id)">star: {{item.star}}</a>
               <p>created_at: {{item.created_at}}</p>
               <p>completed_at: {{item.completed_at}}</p>
               <p>deadline_at: {{item.deadline_at}}</p>
@@ -87,6 +87,22 @@ export default {
     this.fetchAllItems()
   },
   methods: {
+    toggleStar(id){
+      let item = this.items.find(item => item.id === id)
+      const data = {star: item.star}
+      const self = this
+      axios
+        .put(`/items/${id}`, data)
+        .then(function(response) {
+          self.fetchAllItems()
+        })
+        .catch(function(error) {
+          console.log(error);
+        })
+        .then(function() {
+          // always executed
+        });
+    },
     filterInProgress(){
       this.filterItems = this.items.filter(item => item.completed_at === null);
     },
