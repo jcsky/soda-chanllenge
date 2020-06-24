@@ -5,3 +5,7 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+Item.create(title: 'item-1', comment: 'comment-1')
+Item.create(title: 'item-2 completed', comment: 'comment-2', completed_at: Time.now()-1.day)
+Item.create(title: 'item-3 deadline is yesterday', comment: 'comment-3', deadline_at: Time.now()-1.day)
+Item.create(title: 'item-4 star', comment: 'comment-4', star: true)
